@@ -4,7 +4,6 @@ import {
   Calculator,
   CalendarDays,
   CalendarRange,
-  Car,
   Clock,
   CreditCard,
   Divide,
@@ -14,6 +13,7 @@ import {
   KeyRound,
   Landmark,
   LayoutList,
+  Lock,
   LucideIcon,
   Map,
   Percent,
@@ -25,13 +25,17 @@ import {
   Waves,
   Zap,
 } from "lucide-react-native";
-import { FlatList, Text, View } from "react-native";
+import { Dimensions, FlatList, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 
 import ToolCard from "@/components/ToolCard";
 
-type Tool = {
+const { width: screenWidth } = Dimensions.get("window");
+const CARD_WIDTH = (screenWidth - 56) / 2;
+
+type ToolItem = {
+  type?: "tool";
   id: string;
   title: string;
   description: string;
@@ -40,13 +44,37 @@ type Tool = {
   tier: "free" | "premium";
 };
 
-const TOOLS: Tool[] = [
+type DividerItem = {
+  type: "divider";
+  id: string;
+  title: string;
+};
+
+type ListItem = ToolItem | DividerItem;
+
+const TOOLS: ListItem[] = [
   {
     id: "tip-calculator",
     title: "Tip Calculator",
     description: "Split bills and calculate tips instantly",
     icon: Calculator,
     route: "/tools/tip-calculator",
+    tier: "free",
+  },
+  {
+    id: "tip-from-total",
+    title: "Tip from Total",
+    description: "Work back to the original bill from total paid",
+    icon: Receipt,
+    route: "/tools/tip-from-total",
+    tier: "free",
+  },
+  {
+    id: "percentage-calculator",
+    title: "Percentage",
+    description: "Three modes for any percentage problem",
+    icon: Percent,
+    route: "/tools/percentage-calculator",
     tier: "free",
   },
   {
@@ -82,12 +110,25 @@ const TOOLS: Tool[] = [
     tier: "free",
   },
   {
+    id: "age-calculator",
+    title: "Age Calculator",
+    description: "Exact age in days, weeks, and months",
+    icon: CalendarDays,
+    route: "/tools/age-calculator",
+    tier: "free",
+  },
+  {
     id: "tax-estimator",
     title: "Tax Estimator",
     description: "Freelance and contract tax breakdown",
     icon: Receipt,
     route: "/tools/tax-estimator",
     tier: "free",
+  },
+  {
+    type: "divider",
+    id: "divider-premium",
+    title: "Premium Tools",
   },
   {
     id: "loan-payoff",
@@ -146,14 +187,6 @@ const TOOLS: Tool[] = [
     tier: "premium",
   },
   {
-    id: "age-calculator",
-    title: "Age Calculator",
-    description: "Exact age in days, weeks, and months",
-    icon: CalendarDays,
-    route: "/tools/age-calculator",
-    tier: "free",
-  },
-  {
     id: "date-difference",
     title: "Date Difference",
     description: "Days, weekdays, and weeks between dates",
@@ -168,22 +201,6 @@ const TOOLS: Tool[] = [
     icon: BookOpen,
     route: "/tools/study-timer",
     tier: "premium",
-  },
-  {
-    id: "percentage-calculator",
-    title: "Percentage",
-    description: "Three modes for any percentage problem",
-    icon: Percent,
-    route: "/tools/percentage-calculator",
-    tier: "free",
-  },
-  {
-    id: "tip-from-total",
-    title: "Tip from Total",
-    description: "Work back to the original bill from total paid",
-    icon: Receipt,
-    route: "/tools/tip-from-total",
-    tier: "free",
   },
   {
     id: "gpa-calculator",
@@ -248,29 +265,87 @@ function Header({ topInset }: { topInset: number }) {
   );
 }
 
+function SectionDivider({ title }: { title: string }) {
+  return (
+    <View className="flex-row items-center px-4 pt-4 pb-2">
+      <View className="flex-1 h-px bg-zinc-200 dark:bg-zinc-700" />
+      <View className="flex-row items-center mx-3 gap-1.5">
+        <Lock size={11} color="#a1a1aa" />
+        <Text className="text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+          {title}
+        </Text>
+      </View>
+      <View className="flex-1 h-px bg-zinc-200 dark:bg-zinc-700" />
+    </View>
+  );
+}
+
+function groupItemsIntoRows(items: ListItem[]): (ListItem | [ToolItem, ToolItem | null])[] {
+  const rows: (ListItem | [ToolItem, ToolItem | null])[] = [];
+  let i = 0;
+  while (i < items.length) {
+    const item = items[i];
+    if (item.type === "divider") {
+      rows.push(item);
+      i++;
+    } else {
+      const next = items[i + 1];
+      if (next && next.type !== "divider") {
+        rows.push([item as ToolItem, next as ToolItem]);
+        i += 2;
+      } else {
+        rows.push([item as ToolItem, null]);
+        i++;
+      }
+    }
+  }
+  return rows;
+}
+
 export default function DashboardScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const rows = groupItemsIntoRows(TOOLS);
 
   return (
     <View className="flex-1 bg-white dark:bg-zinc-900">
       <FlatList
-        data={TOOLS}
-        keyExtractor={(item) => item.id}
-        numColumns={2}
+        data={rows}
+        keyExtractor={(item) =>
+          Array.isArray(item) ? item[0].id : item.id
+        }
         ListHeaderComponent={<Header topInset={insets.top} />}
-        contentContainerStyle={{ paddingBottom: 24 }}
-        columnWrapperStyle={{ paddingHorizontal: 16, gap: 12, marginBottom: 12 }}
-        renderItem={({ item }) => (
-          <ToolCard
-            title={item.title}
-            description={item.description}
-            icon={item.icon}
-            tier={item.tier}
-            isLocked={item.tier === "premium"}
-            onPress={() => router.push(item.route as never)}
-          />
-        )}
+        contentContainerStyle={{ paddingBottom: 24, paddingHorizontal: 16 }}
+        ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
+        renderItem={({ item }) => {
+          if (Array.isArray(item)) {
+            return (
+              <View style={{ flexDirection: "row", gap: 12 }}>
+                <ToolCard
+                  title={item[0].title}
+                  description={item[0].description}
+                  icon={item[0].icon}
+                  tier={item[0].tier}
+                  isLocked={item[0].tier === "premium"}
+                  onPress={() => router.push(item[0].route as never)}
+                />
+                {item[1] ? (
+                  <ToolCard
+                    title={item[1].title}
+                    description={item[1].description}
+                    icon={item[1].icon}
+                    tier={item[1].tier}
+                    isLocked={item[1].tier === "premium"}
+                    onPress={() => router.push(item[1]!.route as never)}
+                  />
+                ) : (
+                  <View style={{ width: CARD_WIDTH }} />
+                )}
+              </View>
+            );
+          }
+          return <SectionDivider title={item.title} />;
+        }}
       />
     </View>
   );
