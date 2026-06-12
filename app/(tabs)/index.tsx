@@ -118,6 +118,14 @@ const TOOLS: ListItem[] = [
     tier: "free",
   },
   {
+    id: "date-difference",
+    title: "Date Difference",
+    description: "Days, weekdays, and weeks between dates",
+    icon: CalendarRange,
+    route: "/tools/date-difference",
+    tier: "free",
+  },
+  {
     id: "tax-estimator",
     title: "Tax Estimator",
     description: "Freelance and contract tax breakdown",
@@ -184,14 +192,6 @@ const TOOLS: ListItem[] = [
     description: "Estimate body fat with US Navy method",
     icon: User,
     route: "/tools/body-fat",
-    tier: "premium",
-  },
-  {
-    id: "date-difference",
-    title: "Date Difference",
-    description: "Days, weekdays, and weeks between dates",
-    icon: CalendarRange,
-    route: "/tools/date-difference",
     tier: "premium",
   },
   {

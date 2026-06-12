@@ -4,9 +4,6 @@ import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import PremiumGate from "@/components/PremiumGate";
-import { usePremium } from "@/lib/entitlements";
-
 // ─── Date helpers ─────────────────────────────────────────────────────────────
 
 type DateFields = { month: string; day: string; year: string };
@@ -163,20 +160,9 @@ function DateInputRow({
 export default function AgeCalculatorScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { isPremium, isLoading } = usePremium();
-
   const [dob, setDob] = useState<DateFields>({ month: "", day: "", year: "" });
   const [asOfToday, setAsOfToday] = useState(true);
   const [asOf, setAsOf] = useState<DateFields>(todayFields());
-
-  if (isLoading) return null;
-  if (!isPremium) {
-    return (
-      <View className="flex-1 bg-white dark:bg-zinc-900">
-        <PremiumGate toolName="Age Calculator" onClose={() => router.back()} />
-      </View>
-    );
-  }
 
   const dobDate = parseFields(dob);
   const asOfDate = asOfToday ? new Date() : parseFields(asOf);

@@ -4,9 +4,6 @@ import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import PremiumGate from "@/components/PremiumGate";
-import { usePremium } from "@/lib/entitlements";
-
 // ─── Date helpers ─────────────────────────────────────────────────────────────
 
 type DateFields = { month: string; day: string; year: string };
@@ -178,8 +175,6 @@ function DateInputRow({
 export default function DateDifferenceScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { isPremium, isLoading } = usePremium();
-
   const [startDate, setStartDate] = useState<DateFields>({
     month: "",
     day: "",
@@ -190,15 +185,6 @@ export default function DateDifferenceScreen() {
     day: "",
     year: "",
   });
-
-  if (isLoading) return null;
-  if (!isPremium) {
-    return (
-      <View className="flex-1 bg-white dark:bg-zinc-900">
-        <PremiumGate toolName="Date Difference Calculator" onClose={() => router.back()} />
-      </View>
-    );
-  }
 
   const startParsed = parseFields(startDate);
   const endParsed = parseFields(endDate);
