@@ -10,6 +10,7 @@ import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 
 import { useColorScheme } from "@/components/useColorScheme";
+import { configureRevenueCat } from "@/lib/entitlements";
 import { initDB } from "@/lib/storage";
 
 export { ErrorBoundary } from "expo-router";
@@ -29,6 +30,7 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
+    configureRevenueCat();
     initDB().catch(console.error);
   }, []);
 

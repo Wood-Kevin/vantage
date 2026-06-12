@@ -1,7 +1,12 @@
 import { Gem, X } from "lucide-react-native";
-import { Modal, Pressable, Text, View } from "react-native";
+import { useState } from "react";
+import { ActivityIndicator, Modal, Pressable, Text, View } from "react-native";
 
-import { isPremium } from "@/lib/entitlements";
+import {
+  purchaseLifetime,
+  purchaseMonthly,
+  restorePurchases,
+} from "@/lib/entitlements";
 
 type Props = {
   toolName: string;
@@ -9,22 +14,27 @@ type Props = {
 };
 
 export default function PremiumGate({ toolName, onClose }: Props) {
+  const [loading, setLoading] = useState(false);
+
   async function handleLifetime() {
-    console.log("Purchase intent: lifetime access");
-    const unlocked = await isPremium();
-    console.log("isPremium after lifetime intent:", unlocked);
+    setLoading(true);
+    const unlocked = await purchaseLifetime();
+    setLoading(false);
+    if (unlocked) onClose();
   }
 
   async function handleMonthly() {
-    console.log("Purchase intent: monthly subscription");
-    const unlocked = await isPremium();
-    console.log("isPremium after monthly intent:", unlocked);
+    setLoading(true);
+    const unlocked = await purchaseMonthly();
+    setLoading(false);
+    if (unlocked) onClose();
   }
 
   async function handleRestore() {
-    console.log("Restore purchases tapped");
-    const unlocked = await isPremium();
-    console.log("isPremium after restore:", unlocked);
+    setLoading(true);
+    const unlocked = await restorePurchases();
+    setLoading(false);
+    if (unlocked) onClose();
   }
 
   return (
@@ -36,6 +46,7 @@ export default function PremiumGate({ toolName, onClose }: Props) {
             onPress={onClose}
             className="absolute right-4 top-4 rounded-full p-1"
             hitSlop={8}
+            disabled={loading}
           >
             <X size={20} color="#a1a1aa" />
           </Pressable>
@@ -60,27 +71,43 @@ export default function PremiumGate({ toolName, onClose }: Props) {
           {/* Primary button — lifetime */}
           <Pressable
             onPress={handleLifetime}
+            disabled={loading}
             android_ripple={{ color: "#6d28d9" }}
             className="mb-3 items-center rounded-2xl bg-violet-600 py-4"
+            style={({ pressed }) => (pressed && !loading ? { opacity: 0.85 } : {})}
           >
-            <Text className="text-base font-bold text-white">
-              Lifetime Access — $9.99
-            </Text>
+            {loading ? (
+              <ActivityIndicator color="white" />
+            ) : (
+              <Text className="text-base font-bold text-white">
+                Lifetime Access — $9.99
+              </Text>
+            )}
           </Pressable>
 
           {/* Secondary button — monthly */}
           <Pressable
             onPress={handleMonthly}
+            disabled={loading}
             android_ripple={{ color: "#f4f4f5" }}
             className="mb-5 items-center rounded-2xl border border-zinc-200 py-4 dark:border-zinc-600"
+            style={({ pressed }) => (pressed && !loading ? { opacity: 0.7 } : {})}
           >
-            <Text className="text-base font-semibold text-zinc-700 dark:text-zinc-200">
-              $1.99 / month
-            </Text>
+            {loading ? (
+              <ActivityIndicator color="#7c3aed" />
+            ) : (
+              <Text className="text-base font-semibold text-zinc-700 dark:text-zinc-200">
+                $1.99 / month
+              </Text>
+            )}
           </Pressable>
 
           {/* Restore link */}
-          <Pressable onPress={handleRestore} className="items-center">
+          <Pressable
+            onPress={handleRestore}
+            disabled={loading}
+            className="items-center"
+          >
             <Text className="text-sm text-zinc-400 dark:text-zinc-500">
               Restore Purchases
             </Text>
