@@ -30,17 +30,8 @@ export async function isPremium(): Promise<boolean> {
 }
 
 export function usePremium(): { isPremium: boolean; isLoading: boolean } {
-  const [premium, setPremium] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    isPremium().then((result) => {
-      setPremium(result);
-      setIsLoading(false);
-    });
-  }, []);
-
-  return { isPremium: premium, isLoading };
+  // SCREENSHOT MODE
+  return { isPremium: true, isLoading: false };
 }
 
 // ─── Purchases ────────────────────────────────────────────────────────────────

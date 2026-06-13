@@ -30,6 +30,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 
 import ToolCard from "@/components/ToolCard";
+import { usePremium } from "@/lib/entitlements";
 
 const { width: screenWidth } = Dimensions.get("window");
 const CARD_WIDTH = (screenWidth - 56) / 2;
@@ -305,6 +306,7 @@ function groupItemsIntoRows(items: ListItem[]): (ListItem | [ToolItem, ToolItem 
 export default function DashboardScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const { isPremium } = usePremium();
   const rows = groupItemsIntoRows(TOOLS);
 
   return (
@@ -326,7 +328,7 @@ export default function DashboardScreen() {
                   description={item[0].description}
                   icon={item[0].icon}
                   tier={item[0].tier}
-                  isLocked={item[0].tier === "premium"}
+                  isLocked={item[0].tier === "premium" && !isPremium}
                   onPress={() => router.push(item[0].route as never)}
                 />
                 {item[1] ? (
@@ -335,7 +337,7 @@ export default function DashboardScreen() {
                     description={item[1].description}
                     icon={item[1].icon}
                     tier={item[1].tier}
-                    isLocked={item[1].tier === "premium"}
+                    isLocked={item[1].tier === "premium" && !isPremium}
                     onPress={() => router.push(item[1]!.route as never)}
                   />
                 ) : (
