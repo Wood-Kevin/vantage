@@ -1,9 +1,9 @@
 import Constants from "expo-constants";
 import { Check, ChevronRight, Crown } from "lucide-react-native";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import { Alert, Linking, Pressable, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { usePremium } from "@/lib/entitlements";
+import { restorePurchases, usePremium } from "@/lib/entitlements";
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
@@ -109,6 +109,38 @@ export default function SettingsScreen() {
 
   const appVersion = Constants.expoConfig?.version ?? "1.0.0";
 
+  async function handleRestorePurchases() {
+    const restored = await restorePurchases();
+    Alert.alert(
+      restored ? "Purchases Restored" : "Nothing to Restore",
+      restored
+        ? "Purchases restored successfully"
+        : "No purchases found to restore"
+    );
+  }
+
+  function handleRateVantage() {
+    Linking.openURL("market://details?id=com.kevinwood.vantage").catch(() =>
+      Linking.openURL(
+        "https://play.google.com/store/apps/details?id=com.kevinwood.vantage"
+      )
+    );
+  }
+
+  function handlePrivacyPolicy() {
+    Linking.openURL("https://wood-kevin.github.io/vantage/privacy.html");
+  }
+
+  function handleTermsOfUse() {
+    Linking.openURL("https://wood-kevin.github.io/vantage/terms.html");
+  }
+
+  function handleReportBug() {
+    Linking.openURL(
+      "mailto:kevin.wood02284@icloud.com?subject=Vantage Bug Report"
+    );
+  }
+
   return (
     <View className="flex-1 bg-zinc-50 dark:bg-zinc-900">
       <ScrollView
@@ -144,19 +176,23 @@ export default function SettingsScreen() {
         <View className="rounded-2xl bg-white dark:bg-zinc-800 overflow-hidden">
           <SettingRow
             label="Restore Purchases"
-            onPress={() => console.log("restore purchases")}
+            onPress={handleRestorePurchases}
           />
           <SettingRow
             label="Rate Vantage"
-            onPress={() => console.log("rate app")}
+            onPress={handleRateVantage}
+          />
+          <SettingRow
+            label="Report a Bug"
+            onPress={handleReportBug}
           />
           <SettingRow
             label="Privacy Policy"
-            onPress={() => console.log("privacy policy")}
+            onPress={handlePrivacyPolicy}
           />
           <SettingRow
             label="Terms of Use"
-            onPress={() => console.log("terms of use")}
+            onPress={handleTermsOfUse}
             isLast
           />
         </View>
