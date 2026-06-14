@@ -22,6 +22,7 @@ import {
   Scale,
   Tag,
   User,
+  Users,
   Waves,
   Zap,
 } from "lucide-react-native";
@@ -63,11 +64,11 @@ const TOOLS: ListItem[] = [
     tier: "free",
   },
   {
-    id: "tip-from-total",
-    title: "Tip from Total",
-    description: "Work back to the original bill from total paid",
-    icon: Receipt,
-    route: "/tools/tip-from-total",
+    id: "expense-splitter",
+    title: "Expense Splitter",
+    description: "Track group expenses and settle up fairly",
+    icon: Users,
+    route: "/tools/expense-splitter",
     tier: "free",
   },
   {
