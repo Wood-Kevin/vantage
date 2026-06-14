@@ -155,10 +155,8 @@ export default function ExpenseSplitterScreen() {
 
   // Keep form fields in sync when people list changes
   useEffect(() => {
-    // Ensure paidBy still points to a valid person
-    if (people.length > 0 && !people.find((p) => p.id === expPaidBy)) {
-      setExpPaidBy(people[0].id);
-    } else if (people.length === 0) {
+    // If the selected payer was removed, clear the selection
+    if (expPaidBy && !people.find((p) => p.id === expPaidBy)) {
       setExpPaidBy("");
     }
     // Add new people to split, remove deleted ones
@@ -199,6 +197,7 @@ export default function ExpenseSplitterScreen() {
     ]);
     setExpDesc("");
     setExpAmount("");
+    setExpPaidBy("");
   }
 
   function removeExpense(id: string) {
@@ -378,6 +377,11 @@ export default function ExpenseSplitterScreen() {
             <Text className="mb-1.5 text-xs font-medium text-zinc-500 dark:text-zinc-400">
               Paid By
             </Text>
+            {!expPaidBy && (
+              <Text className="mb-2 text-sm text-zinc-400 dark:text-zinc-500">
+                Select who paid
+              </Text>
+            )}
             <View className="mb-3 flex-row flex-wrap gap-2">
               {people.map((person) => {
                 const active = expPaidBy === person.id;
