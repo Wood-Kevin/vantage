@@ -4,8 +4,6 @@ import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import PremiumGate from "@/components/PremiumGate";
-import { usePremium } from "@/lib/entitlements";
 
 // ─── Grade data ───────────────────────────────────────────────────────────────
 
@@ -165,8 +163,6 @@ function GradeSelector({
 export default function GpaCalculatorScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { isPremium, isLoading } = usePremium();
-
   const [mode, setMode] = useState<Mode>("calculate");
 
   // Mode 1 — courses
@@ -179,15 +175,6 @@ export default function GpaCalculatorScreen() {
   const [currentCredits, setCurrentCredits] = useState("");
   const [nextCredits, setNextCredits] = useState("3");
   const [targetGpa, setTargetGpa] = useState("");
-
-  if (isLoading) return null;
-  if (!isPremium) {
-    return (
-      <View className="flex-1 bg-white dark:bg-zinc-900">
-        <PremiumGate toolName="GPA Calculator" onClose={() => router.back()} />
-      </View>
-    );
-  }
 
   function addCourse() {
     setCourses((prev) => [

@@ -4,8 +4,6 @@ import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import PremiumGate from "@/components/PremiumGate";
-import { usePremium } from "@/lib/entitlements";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -127,8 +125,6 @@ function FieldInput({
 export default function RoadTripScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { isPremium, isLoading } = usePremium();
-
   const [units, setUnits] = useState<Units>("imperial");
   const [distance, setDistance] = useState("");
   const [efficiency, setEfficiency] = useState("");
@@ -138,15 +134,6 @@ export default function RoadTripScreen() {
   const [foodPerPerson, setFoodPerPerson] = useState("");
   const [people, setPeople] = useState("2");
   const [misc, setMisc] = useState("");
-
-  if (isLoading) return null;
-  if (!isPremium) {
-    return (
-      <View className="flex-1 bg-white dark:bg-zinc-900">
-        <PremiumGate toolName="Road Trip Planner" onClose={() => router.back()} />
-      </View>
-    );
-  }
 
   const result = calcRoadTrip(
     distance, efficiency, fuelPrice, days,

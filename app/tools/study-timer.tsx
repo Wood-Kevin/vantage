@@ -4,8 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { Pressable, ScrollView, Text, Vibration, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import PremiumGate from "@/components/PremiumGate";
-import { usePremium } from "@/lib/entitlements";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -113,8 +111,6 @@ function Stepper({
 export default function StudyTimerScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { isPremium, isLoading } = usePremium();
-
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [phase, setPhase] = useState<Phase>("work");
@@ -222,15 +218,6 @@ export default function StudyTimerScreen() {
   const timeStr = `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
   const phaseColor = PHASE_COLORS[phase];
   const pomodoroInCycle = completedPomodoros % settings.pomodorosBeforeLong;
-
-  if (isLoading) return null;
-  if (!isPremium) {
-    return (
-      <View className="flex-1 bg-white dark:bg-zinc-900">
-        <PremiumGate toolName="Study Timer" onClose={() => router.back()} />
-      </View>
-    );
-  }
 
   return (
     <ScrollView

@@ -1,9 +1,7 @@
 import Constants from "expo-constants";
-import { Check, ChevronRight, Crown } from "lucide-react-native";
-import { Alert, Linking, Pressable, ScrollView, Text, View } from "react-native";
+import { ChevronRight } from "lucide-react-native";
+import { Linking, Pressable, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-
-import { restorePurchases, usePremium } from "@/lib/entitlements";
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
@@ -58,66 +56,12 @@ function SettingRow({ label, value, onPress, isLast = false }: RowProps) {
   return inner;
 }
 
-function UpgradeBanner() {
-  return (
-    <View className="rounded-2xl bg-violet-600 p-5">
-      <View className="flex-row items-center gap-2 mb-1.5">
-        <Crown size={20} color="white" />
-        <Text className="text-lg font-bold text-white">Unlock Vantage Premium</Text>
-      </View>
-      <Text className="text-sm text-violet-200 mb-4 leading-5">
-        Get all 25+ tools for a one-time payment
-      </Text>
-      <View className="flex-row gap-3">
-        <Pressable
-          onPress={() => console.log("lifetime purchase")}
-          style={({ pressed }) => (pressed ? { opacity: 0.85 } : {})}
-          className="flex-1 rounded-xl bg-white py-2.5 items-center justify-center"
-        >
-          <Text className="text-sm font-semibold text-violet-600">Lifetime $9.99</Text>
-        </Pressable>
-        <Pressable
-          onPress={() => console.log("monthly purchase")}
-          style={({ pressed }) => (pressed ? { opacity: 0.85 } : {})}
-          className="flex-1 rounded-xl bg-violet-700 py-2.5 items-center justify-center"
-        >
-          <Text className="text-sm font-semibold text-white">$1.99 / mo</Text>
-        </Pressable>
-      </View>
-    </View>
-  );
-}
-
-function PremiumBadge() {
-  return (
-    <View className="flex-row items-center gap-2.5 px-4 py-3.5 rounded-2xl bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800">
-      <View className="w-5 h-5 rounded-full bg-emerald-500 items-center justify-center">
-        <Check size={12} color="white" strokeWidth={3} />
-      </View>
-      <Text className="text-[15px] font-semibold text-emerald-700 dark:text-emerald-400">
-        Premium Active
-      </Text>
-    </View>
-  );
-}
-
 // ─── Screen ───────────────────────────────────────────────────────────────────
 
 export default function SettingsScreen() {
   const insets = useSafeAreaInsets();
-  const { isPremium, isLoading } = usePremium();
 
   const appVersion = Constants.expoConfig?.version ?? "1.0.0";
-
-  async function handleRestorePurchases() {
-    const restored = await restorePurchases();
-    Alert.alert(
-      restored ? "Purchases Restored" : "Nothing to Restore",
-      restored
-        ? "Purchases restored successfully"
-        : "No purchases found to restore"
-    );
-  }
 
   function handleRateVantage() {
     Linking.openURL("market://details?id=com.kevinwood.vantage").catch(() =>
@@ -156,10 +100,7 @@ export default function SettingsScreen() {
           Settings
         </Text>
 
-        {/* Section 1 — Upgrade / Premium */}
-        {!isLoading && (isPremium ? <PremiumBadge /> : <UpgradeBanner />)}
-
-        {/* Section 2 — App Info */}
+        {/* Section 1 — App Info */}
         <SectionLabel title="About" />
         <View className="rounded-2xl bg-white dark:bg-zinc-800 overflow-hidden">
           <SettingRow label="Version" value={appVersion} />
@@ -171,13 +112,9 @@ export default function SettingsScreen() {
           />
         </View>
 
-        {/* Section 3 — Support */}
+        {/* Section 2 — Support */}
         <SectionLabel title="Support" />
         <View className="rounded-2xl bg-white dark:bg-zinc-800 overflow-hidden">
-          <SettingRow
-            label="Restore Purchases"
-            onPress={handleRestorePurchases}
-          />
           <SettingRow
             label="Rate Vantage"
             onPress={handleRateVantage}
@@ -197,13 +134,13 @@ export default function SettingsScreen() {
           />
         </View>
 
-        {/* Section 4 — Footer */}
+        {/* Section 3 — Footer */}
         <View className="items-center mt-10 gap-1.5">
           <Text className="text-sm text-zinc-400 dark:text-zinc-500">
             Made with ☕ by one person
           </Text>
           <Text className="text-xs text-zinc-400 dark:text-zinc-500 text-center">
-            Vantage — 25+ tools for life's quick questions
+            Vantage — 30 tools for life's quick questions
           </Text>
         </View>
       </ScrollView>

@@ -4,8 +4,6 @@ import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import PremiumGate from "@/components/PremiumGate";
-import { usePremium } from "@/lib/entitlements";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -151,8 +149,6 @@ function isWeightChangeGoal(goal: Goal): boolean {
 export default function CalorieDeficitScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { isPremium, isLoading } = usePremium();
-
   const [age, setAge] = useState("");
   const [gender, setGender] = useState<Gender>("male");
   const [weightUnit, setWeightUnit] = useState<WeightUnit>("lb");
@@ -164,15 +160,6 @@ export default function CalorieDeficitScreen() {
   const [activity, setActivity] = useState<ActivityLevel>("moderate");
   const [goal, setGoal] = useState<Goal>("lose1");
   const [targetWeight, setTargetWeight] = useState("");
-
-  if (isLoading) return null;
-  if (!isPremium) {
-    return (
-      <View className="flex-1 bg-white dark:bg-zinc-900">
-        <PremiumGate toolName="Calorie Deficit Calculator" onClose={() => router.back()} />
-      </View>
-    );
-  }
 
   const result = calcCalories(
     age,

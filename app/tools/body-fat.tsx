@@ -4,8 +4,6 @@ import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import PremiumGate from "@/components/PremiumGate";
-import { usePremium } from "@/lib/entitlements";
 
 // ─── Pure calculation (US Navy Method) ───────────────────────────────────────
 
@@ -180,8 +178,6 @@ function fmtNum(value: number, decimals = 1): string {
 export default function BodyFatScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { isPremium, isLoading } = usePremium();
-
   const [gender, setGender] = useState<Gender>("male");
   const [unit, setUnit] = useState<MeasurementUnit>("cm");
   const [weight, setWeight] = useState("");
@@ -189,15 +185,6 @@ export default function BodyFatScreen() {
   const [neck, setNeck] = useState("");
   const [waist, setWaist] = useState("");
   const [hip, setHip] = useState("");
-
-  if (isLoading) return null;
-  if (!isPremium) {
-    return (
-      <View className="flex-1 bg-white dark:bg-zinc-900">
-        <PremiumGate toolName="Body Fat % Estimator" onClose={() => router.back()} />
-      </View>
-    );
-  }
 
   const result = calcBodyFat(gender, unit, weight, height, neck, waist, hip);
 

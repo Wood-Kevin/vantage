@@ -9,7 +9,6 @@ import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import { useColorScheme } from "@/components/useColorScheme";
-import { configureRevenueCat } from "@/lib/entitlements";
 import { initDB } from "@/lib/storage";
 export { ErrorBoundary } from "expo-router";
 export const unstable_settings = {
@@ -24,7 +23,6 @@ export default function RootLayout() {
     Inter_700Bold,
   });
   useEffect(() => {
-    configureRevenueCat();
     initDB().catch(console.error);
   }, []);
   useEffect(() => {

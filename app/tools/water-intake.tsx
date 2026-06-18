@@ -4,8 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import PremiumGate from "@/components/PremiumGate";
-import { usePremium } from "@/lib/entitlements";
 import { getSetting, setSetting } from "@/lib/storage";
 
 // ─── Calculation ──────────────────────────────────────────────────────────────
@@ -71,8 +69,6 @@ const CLIMATE_OPTS: { value: Climate; label: string }[] = [
 export default function WaterIntakeScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { isPremium, isLoading } = usePremium();
-
   const [unit, setUnit] = useState<"lb" | "kg">("lb");
   const [weight, setWeight] = useState("");
   const [activity, setActivity] = useState<ActivityLevel>("light");
@@ -105,15 +101,6 @@ export default function WaterIntakeScreen() {
     if (!persistRef.current) return;
     setSetting("water_count", consumed.toString());
   }, [consumed]);
-
-  if (isLoading) return null;
-  if (!isPremium) {
-    return (
-      <View className="flex-1 bg-white dark:bg-zinc-900">
-        <PremiumGate toolName="Water Intake Tracker" onClose={() => router.back()} />
-      </View>
-    );
-  }
 
   const result = calcWater(weight, unit, activity, climate);
   const goalGlasses = result?.glasses ?? 8;

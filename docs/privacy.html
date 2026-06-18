@@ -3,153 +3,261 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Privacy Policy — Vantage</title>
+  <title>Vantage — Privacy Policy</title>
   <style>
+    :root {
+      --bg:        #0D0D14;
+      --surface:   #14141F;
+      --border:    #1E1E2E;
+      --accent:    #9B6DFF;
+      --accent-lo: #9B6DFF22;
+      --green-lo:  #22c55e18;
+      --green:     #22c55e;
+      --text:      #F0F0F8;
+      --muted:     #8888A8;
+      --radius:    14px;
+    }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      background: #111;
-      color: #e4e4e7;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-size: 16px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       line-height: 1.7;
-      padding: 24px;
+      min-height: 100vh;
     }
-    .container {
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 48px 0 80px;
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Nav ── */
+    nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
-    .label {
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #7c3aed;
-      margin-bottom: 12px;
-    }
-    h1 {
-      font-size: 32px;
+
+    .nav-brand {
+      font-size: 1.1rem;
       font-weight: 700;
-      color: #fff;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-brand .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: inline-block;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+      font-size: 0.875rem;
+    }
+
+    .nav-links a { color: var(--muted); }
+    .nav-links a:hover { color: var(--text); text-decoration: none; }
+    .nav-links .active { color: var(--accent); font-weight: 600; }
+
+    /* ── Layout ── */
+    .page {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* ── Page header ── */
+    .page-header { margin-bottom: 36px; }
+
+    .page-header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
       margin-bottom: 8px;
     }
-    .meta {
-      font-size: 14px;
-      color: #71717a;
-      margin-bottom: 48px;
+
+    .page-header h1 span { color: var(--accent); }
+
+    .page-header .meta {
+      color: var(--muted);
+      font-size: 0.875rem;
     }
-    h2 {
-      font-size: 18px;
-      font-weight: 600;
-      color: #fff;
-      margin: 36px 0 10px;
+
+    /* ── Summary box ── */
+    .summary-box {
+      background: var(--green-lo);
+      border: 1px solid #22c55e44;
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      margin-bottom: 40px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
     }
-    p {
-      color: #a1a1aa;
-      margin-bottom: 12px;
+
+    .summary-box .icon {
+      font-size: 1.6rem;
+      flex-shrink: 0;
+      margin-top: 2px;
     }
-    ul {
+
+    .summary-box h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--green);
+      text-transform: none;
+      letter-spacing: normal;
+      margin-bottom: 6px;
+    }
+
+    .summary-box p {
+      color: #a0e0b0;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* ── Policy sections ── */
+    .policy-section { margin-bottom: 36px; }
+
+    .policy-section h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .policy-section p,
+    .policy-section li {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.75;
+    }
+
+    .policy-section ul {
       list-style: none;
       padding: 0;
-      margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 10px;
     }
-    ul li {
-      color: #a1a1aa;
-      padding: 6px 0;
-      padding-left: 20px;
-      position: relative;
+
+    .policy-section li::before {
+      content: "—";
+      color: var(--accent);
+      margin-right: 10px;
     }
-    ul li::before {
-      content: "–";
-      position: absolute;
-      left: 0;
-      color: #7c3aed;
+
+    .policy-section p + p { margin-top: 10px; }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 32px 24px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.8rem;
     }
-    a {
-      color: #a78bfa;
-      text-decoration: none;
-    }
-    a:hover { text-decoration: underline; }
-    hr {
-      border: none;
-      border-top: 1px solid #27272a;
-      margin: 48px 0;
-    }
-    .footer {
-      font-size: 13px;
-      color: #52525b;
-    }
+
+    footer a { color: var(--muted); }
+    footer a:hover { color: var(--text); }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="label">Vantage</div>
-    <h1>Privacy Policy</h1>
-    <p class="meta">Last updated: June 2026 &nbsp;·&nbsp; Developer: Kevin Wood</p>
 
-    <p>
-      Your privacy is important. This policy explains what information Vantage
-      does and does not collect.
-    </p>
+<nav>
+  <span class="nav-brand"><span class="dot"></span>Vantage</span>
+  <ul class="nav-links">
+    <li><a href="index.html">Support</a></li>
+    <li><a href="privacy.html" class="active">Privacy</a></li>
+    <li><a href="terms.html">Terms</a></li>
+  </ul>
+</nav>
 
-    <h2>No Personal Data Collected</h2>
-    <p>
-      Vantage does not collect, store, or transmit any personal information.
-      No account is required to use the app.
-    </p>
+<div class="page">
 
-    <h2>Everything Stays on Your Device</h2>
-    <p>
-      All calculations are performed locally on your device. Any data you
-      enter into the app — numbers, measurements, dates — never leaves your
-      device and is not sent to any server.
-    </p>
-    <ul>
-      <li>No accounts or sign-in required</li>
-      <li>No analytics or usage tracking</li>
-      <li>No crash reporting services</li>
-      <li>No advertising SDKs</li>
-    </ul>
-
-    <h2>In-App Purchases</h2>
-    <p>
-      Premium access is available as an optional purchase. All payment
-      processing is handled entirely by Google Play or the Apple App Store.
-      Vantage does not receive, store, or process your payment information.
-    </p>
-
-    <h2>No Third-Party Sharing</h2>
-    <p>
-      No data is shared with third parties. There are no integrations with
-      social networks, advertising networks, or data brokers.
-    </p>
-
-    <h2>Children's Privacy</h2>
-    <p>
-      Vantage does not knowingly collect information from children under 13.
-      Because no data is collected from any user, this applies equally to all
-      age groups.
-    </p>
-
-    <h2>Changes to This Policy</h2>
-    <p>
-      If this policy changes, the updated version will be posted at this URL
-      with a revised date. Continued use of the app after any changes
-      constitutes acceptance of the new policy.
-    </p>
-
-    <h2>Contact</h2>
-    <p>
-      Questions or concerns? Reach out at
-      <a href="mailto:kevin.wood02284@icloud.com">kevin.wood02284@icloud.com</a>.
-    </p>
-
-    <hr />
-
-    <p class="footer">
-      Vantage &nbsp;·&nbsp; &copy; 2026 Kevin Wood &nbsp;·&nbsp;
-      <a href="terms.html">Terms of Use</a>
-    </p>
+  <div class="page-header">
+    <h1>Privacy <span>Policy</span></h1>
+    <p class="meta">Effective date: June 18, 2026 &nbsp;·&nbsp; App: Vantage</p>
   </div>
+
+  <div class="summary-box">
+    <span class="icon">🔒</span>
+    <div>
+      <h2>The short version</h2>
+      <p><strong>Vantage does not collect, store, or transmit any personal data.</strong> There are no accounts, no analytics, no tracking, and no servers. Everything stays on your device.</p>
+    </div>
+  </div>
+
+  <div class="policy-section">
+    <h3>1. No Personal Data Collected</h3>
+    <p>Vantage does not collect any personally identifiable information (PII). We do not ask for your name, email address, phone number, location, or any other personal details. There is no registration or account system of any kind.</p>
+  </div>
+
+  <div class="policy-section">
+    <h3>2. On-Device Storage Only</h3>
+    <p>Any data you enter into the app — such as water intake counts or subscription names — is stored exclusively on your device using SQLite, a local database that never leaves your phone. This data is never uploaded, synced, or shared with any external server or service.</p>
+    <p>If you delete the app, all locally stored data is permanently removed from your device.</p>
+  </div>
+
+  <div class="policy-section">
+    <h3>3. No Third-Party SDKs or Analytics</h3>
+    <p>Vantage does not integrate any third-party analytics, advertising, crash reporting, or tracking SDKs. The app contains only the code necessary to provide its calculator and utility features.</p>
+    <ul>
+      <li>No analytics SDK</li>
+      <li>No advertising SDK</li>
+      <li>No crash reporting service</li>
+      <li>No payment processor</li>
+      <li>No social media integration</li>
+    </ul>
+  </div>
+
+  <div class="policy-section">
+    <h3>4. No Network Requests</h3>
+    <p>Vantage makes no network requests during normal operation. All calculations are performed locally on your device. The app does not connect to the internet, fetch remote data, or communicate with any server. It works fully offline from the moment it is installed.</p>
+  </div>
+
+  <div class="policy-section">
+    <h3>5. Children's Privacy</h3>
+    <p>Vantage does not knowingly collect any information from children under the age of 13 (or the applicable age of digital consent in your jurisdiction). Because the app collects no data from any user at all, it is safe for users of all ages.</p>
+  </div>
+
+  <div class="policy-section">
+    <h3>6. App Store Platforms</h3>
+    <p>Vantage is distributed through the Apple App Store and Google Play Store. Those platforms may collect certain usage data (such as download counts or crash reports) according to their own privacy policies. This data is collected by Apple or Google directly and is governed by their respective policies, not this one.</p>
+  </div>
+
+  <div class="policy-section">
+    <h3>7. Changes to This Policy</h3>
+    <p>If we ever change this privacy policy, we will update the effective date above and, where required by law, notify users through the App Store update notes. Continued use of the app after changes constitutes acceptance of the updated policy.</p>
+  </div>
+
+  <div class="policy-section">
+    <h3>8. Contact</h3>
+    <p>If you have any questions or concerns about this privacy policy, please contact us at:</p>
+    <p style="margin-top: 12px;"><a href="mailto:kevin.wood02284@icloud.com">kevin.wood02284@icloud.com</a></p>
+  </div>
+
+</div>
+
+<footer>
+  <p>&copy; 2026 Vantage &nbsp;·&nbsp; <a href="index.html">Support</a> &nbsp;·&nbsp; <a href="terms.html">Terms of Use</a></p>
+</footer>
+
 </body>
 </html>

@@ -4,8 +4,6 @@ import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import PremiumGate from "@/components/PremiumGate";
-import { usePremium } from "@/lib/entitlements";
 
 // ─── Pure calculation ─────────────────────────────────────────────────────────
 
@@ -72,21 +70,10 @@ const RESULT_ROWS: { key: keyof RateResult; label: string }[] = [
 export default function HourlySalaryScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { isPremium, isLoading } = usePremium();
-
   const [mode, setMode] = useState<Mode>("hourly");
   const [value, setValue] = useState("");
   const [hoursPerWeek, setHoursPerWeek] = useState("40");
   const [weeksPerYear, setWeeksPerYear] = useState("52");
-
-  if (isLoading) return null;
-  if (!isPremium) {
-    return (
-      <View className="flex-1 bg-white dark:bg-zinc-900">
-        <PremiumGate toolName="Hourly ↔ Salary Converter" onClose={() => router.back()} />
-      </View>
-    );
-  }
 
   const result = calcRates(
     value,

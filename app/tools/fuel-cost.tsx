@@ -4,8 +4,6 @@ import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import PremiumGate from "@/components/PremiumGate";
-import { usePremium } from "@/lib/entitlements";
 
 // ─── Pure calculation ─────────────────────────────────────────────────────────
 
@@ -104,8 +102,6 @@ function UnitToggle<T extends string>({
 export default function FuelCostScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { isPremium, isLoading } = usePremium();
-
   const [distance, setDistance] = useState("");
   const [distUnit, setDistUnit] = useState<DistanceUnit>("km");
   const [efficiency, setEfficiency] = useState("");
@@ -113,15 +109,6 @@ export default function FuelCostScreen() {
   const [price, setPrice] = useState("");
   const [priceUnit, setPriceUnit] = useState<PriceUnit>("perL");
   const [passengers, setPassengers] = useState("1");
-
-  if (isLoading) return null;
-  if (!isPremium) {
-    return (
-      <View className="flex-1 bg-white dark:bg-zinc-900">
-        <PremiumGate toolName="Fuel Cost Estimator" onClose={() => router.back()} />
-      </View>
-    );
-  }
 
   const result = calcFuel(distance, distUnit, efficiency, effUnit, price, priceUnit, passengers);
   const passengerCount = parseInt(passengers, 10) || 1;

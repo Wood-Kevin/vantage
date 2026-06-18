@@ -4,8 +4,6 @@ import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import PremiumGate from "@/components/PremiumGate";
-import { usePremium } from "@/lib/entitlements";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -204,8 +202,6 @@ const MODES: { value: Mode; label: string }[] = [
 export default function DiscountMarkupScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { isPremium, isLoading } = usePremium();
-
   const [mode, setMode] = useState<Mode>("discount");
 
   // Discount inputs
@@ -220,15 +216,6 @@ export default function DiscountMarkupScreen() {
   const [revFinal, setRevFinal] = useState("");
   const [revPct, setRevPct] = useState("");
   const [revType, setRevType] = useState<ReverseType>("discount");
-
-  if (isLoading) return null;
-  if (!isPremium) {
-    return (
-      <View className="flex-1 bg-white dark:bg-zinc-900">
-        <PremiumGate toolName="Discount & Markup Calculator" onClose={() => router.back()} />
-      </View>
-    );
-  }
 
   const discResult = mode === "discount" ? calcDiscount(discOriginal, discPct) : null;
   const markResult = mode === "markup" ? calcMarkup(markCost, markPct) : null;

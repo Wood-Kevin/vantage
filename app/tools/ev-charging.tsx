@@ -4,8 +4,6 @@ import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import PremiumGate from "@/components/PremiumGate";
-import { usePremium } from "@/lib/entitlements";
 
 // ─── Charger data ─────────────────────────────────────────────────────────────
 
@@ -89,8 +87,6 @@ function fmt2(n: number): string {
 export default function EvChargingScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { isPremium, isLoading } = usePremium();
-
   const [capacity, setCapacity] = useState("");
   const [currentPct, setCurrentPct] = useState("20");
   const [targetPct, setTargetPct] = useState("80");
@@ -99,15 +95,6 @@ export default function EvChargingScreen() {
   const [rate, setRate] = useState("0.13");
   const [efficiency, setEfficiency] = useState("");
   const [rangeUnit, setRangeUnit] = useState<RangeUnit>("mi");
-
-  if (isLoading) return null;
-  if (!isPremium) {
-    return (
-      <View className="flex-1 bg-white dark:bg-zinc-900">
-        <PremiumGate toolName="EV Charging Calculator" onClose={() => router.back()} />
-      </View>
-    );
-  }
 
   const chargerKw =
     charger === "custom"

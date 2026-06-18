@@ -4,8 +4,6 @@ import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import PremiumGate from "@/components/PremiumGate";
-import { usePremium } from "@/lib/entitlements";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -228,8 +226,6 @@ const MODES: { value: Mode; label: string }[] = [
 export default function RatioProportionScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { isPremium, isLoading } = usePremium();
-
   const [mode, setMode] = useState<Mode>("simplify");
 
   // Simplify
@@ -247,15 +243,6 @@ export default function RatioProportionScreen() {
   const [missC, setMissC] = useState("");
   const [missD, setMissD] = useState("");
   const [missing, setMissing] = useState<MissingSlot>("d");
-
-  if (isLoading) return null;
-  if (!isPremium) {
-    return (
-      <View className="flex-1 bg-white dark:bg-zinc-900">
-        <PremiumGate toolName="Ratio & Proportion Solver" onClose={() => router.back()} />
-      </View>
-    );
-  }
 
   const simpResult = mode === "simplify" ? calcSimplify(simpA, simpB) : null;
   const scaleResult = mode === "scale" ? calcScale(scaleA, scaleB, scaleFactor) : null;

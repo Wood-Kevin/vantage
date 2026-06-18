@@ -4,8 +4,6 @@ import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import PremiumGate from "@/components/PremiumGate";
-import { usePremium } from "@/lib/entitlements";
 
 // ─── Types and pure calculation ───────────────────────────────────────────────
 
@@ -80,19 +78,8 @@ const EMPTY_FORM: Omit<Subscription, "id"> = {
 export default function SubscriptionTrackerScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { isPremium, isLoading } = usePremium();
-
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [form, setForm] = useState<Omit<Subscription, "id">>(EMPTY_FORM);
-
-  if (isLoading) return null;
-  if (!isPremium) {
-    return (
-      <View className="flex-1 bg-white dark:bg-zinc-900">
-        <PremiumGate toolName="Subscription Tracker" onClose={() => router.back()} />
-      </View>
-    );
-  }
 
   function addSubscription() {
     if (!form.name.trim() && !form.cost) return;

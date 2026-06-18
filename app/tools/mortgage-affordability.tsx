@@ -4,8 +4,6 @@ import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import PremiumGate from "@/components/PremiumGate";
-import { usePremium } from "@/lib/entitlements";
 
 // ─── Pure calculation ─────────────────────────────────────────────────────────
 
@@ -94,8 +92,6 @@ function fmt(value: number): string {
 export default function MortgageAffordabilityScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { isPremium, isLoading } = usePremium();
-
   const [income, setIncome] = useState("");
   const [debts, setDebts] = useState("");
   const [down, setDown] = useState("");
@@ -103,15 +99,6 @@ export default function MortgageAffordabilityScreen() {
   const [insurance, setInsurance] = useState("0.5");
   const [rate, setRate] = useState("7");
   const [term, setTerm] = useState<15 | 30>(30);
-
-  if (isLoading) return null;
-  if (!isPremium) {
-    return (
-      <View className="flex-1 bg-white dark:bg-zinc-900">
-        <PremiumGate toolName="Mortgage Affordability" onClose={() => router.back()} />
-      </View>
-    );
-  }
 
   const result = calcMortgage(income, debts, down, propTax, insurance, rate, term);
 

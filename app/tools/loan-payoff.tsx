@@ -4,8 +4,6 @@ import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import PremiumGate from "@/components/PremiumGate";
-import { usePremium } from "@/lib/entitlements";
 
 // ─── Pure calculation ─────────────────────────────────────────────────────────
 
@@ -86,20 +84,9 @@ function timeLabel(years: number, months: number): string {
 export default function LoanPayoffScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { isPremium, isLoading } = usePremium();
-
   const [balance, setBalance] = useState("");
   const [rate, setRate] = useState("");
   const [payment, setPayment] = useState("");
-
-  if (isLoading) return null;
-  if (!isPremium) {
-    return (
-      <View className="flex-1 bg-white dark:bg-zinc-900">
-        <PremiumGate toolName="Loan Payoff Calculator" onClose={() => router.back()} />
-      </View>
-    );
-  }
 
   const result = calcLoanPayoff(balance, rate, payment);
 
