@@ -3,6 +3,7 @@ import { useRouter } from "expo-router";
 import { ArrowLeft, Check, Trash2, X } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Disclaimer } from "@/components/Disclaimer";
 import { getSetting, setSetting } from "@/lib/storage";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -575,6 +576,8 @@ export default function ExpenseSplitterScreen() {
             )}
           </View>
         )}
+
+        <Disclaimer variant="finance" />
       </View>
     </ScrollView>
   );

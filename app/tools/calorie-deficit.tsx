@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { Disclaimer } from "@/components/Disclaimer";
+import { Sources } from "@/components/Sources";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -481,6 +483,16 @@ export default function CalorieDeficitScreen() {
             </Text>
           </View>
         )}
+
+        <Disclaimer variant="health" />
+        <Sources
+          links={[
+            {
+              label: "Mifflin-St Jeor equation (NIH/StatPearls)",
+              url: "https://www.ncbi.nlm.nih.gov/books/NBK279077/",
+            },
+          ]}
+        />
       </View>
     </ScrollView>
   );

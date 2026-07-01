@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { Disclaimer } from "@/components/Disclaimer";
+
 // ─── 2025 Federal Tax Brackets (IRS Rev. Proc. 2024-40) ──────────────────────
 
 type FilingStatus = "single" | "married" | "hoh";
@@ -340,6 +342,8 @@ export default function TaxEstimatorScreen() {
             </Text>
           </View>
         )}
+
+        <Disclaimer variant="tax" />
       </View>
     </ScrollView>
   );

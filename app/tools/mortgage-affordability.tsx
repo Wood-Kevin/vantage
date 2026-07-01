@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { Disclaimer } from "@/components/Disclaimer";
 
 // ─── Pure calculation ─────────────────────────────────────────────────────────
 
@@ -312,6 +313,8 @@ export default function MortgageAffordabilityScreen() {
             </Text>
           </View>
         )}
+
+        <Disclaimer variant="finance" />
       </View>
     </ScrollView>
   );

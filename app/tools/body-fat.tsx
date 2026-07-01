@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { Disclaimer } from "@/components/Disclaimer";
+import { Sources } from "@/components/Sources";
 
 // ─── Pure calculation (US Navy Method) ───────────────────────────────────────
 
@@ -427,6 +429,16 @@ export default function BodyFatScreen() {
             </Text>
           </View>
         )}
+
+        <Disclaimer variant="health" />
+        <Sources
+          links={[
+            {
+              label: "U.S. Navy body fat method (NIH/StatPearls overview)",
+              url: "https://www.ncbi.nlm.nih.gov/books/NBK551661/",
+            },
+          ]}
+        />
       </View>
     </ScrollView>
   );

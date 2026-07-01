@@ -4,6 +4,9 @@ import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { Disclaimer } from "@/components/Disclaimer";
+import { Sources } from "@/components/Sources";
+
 // ─── Pure calculation ─────────────────────────────────────────────────────────
 
 const FALL_ASLEEP_MINUTES = 14;
@@ -247,6 +250,16 @@ export default function SleepCalculatorScreen() {
         <Text className="mt-4 text-center text-xs text-zinc-400 dark:text-zinc-500">
           Based on 90-min sleep cycles · Includes {FALL_ASLEEP_MINUTES} min to fall asleep
         </Text>
+
+        <Disclaimer variant="health" />
+        <Sources
+          links={[
+            {
+              label: "Sleep cycles overview (NIH/StatPearls)",
+              url: "https://www.ncbi.nlm.nih.gov/books/NBK526132/",
+            },
+          ]}
+        />
       </View>
     </ScrollView>
   );

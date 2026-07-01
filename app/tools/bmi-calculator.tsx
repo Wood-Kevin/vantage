@@ -4,6 +4,9 @@ import { useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { Disclaimer } from "@/components/Disclaimer";
+import { Sources } from "@/components/Sources";
+
 // ─── Pure calculation ─────────────────────────────────────────────────────────
 
 type Unit = "metric" | "imperial";
@@ -243,6 +246,16 @@ export default function BMICalculatorScreen() {
             </Text>
           </View>
         )}
+
+        <Disclaimer variant="health" />
+        <Sources
+          links={[
+            {
+              label: "CDC: About Adult BMI",
+              url: "https://www.cdc.gov/bmi/adult-calculator/index.html",
+            },
+          ]}
+        />
       </View>
     </ScrollView>
   );

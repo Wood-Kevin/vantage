@@ -1,7 +1,11 @@
 import Constants from "expo-constants";
+import * as StoreReview from "expo-store-review";
 import { ChevronRight } from "lucide-react-native";
-import { Linking, Pressable, ScrollView, Text, View } from "react-native";
+import { Linking, Platform, Pressable, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+// PLACEHOLDER — replace with the real numeric App Store ID before shipping.
+const APP_STORE_ID = "6779830034";
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
@@ -63,7 +67,19 @@ export default function SettingsScreen() {
 
   const appVersion = Constants.expoConfig?.version ?? "1.0.0";
 
-  function handleRateVantage() {
+  async function handleRateVantage() {
+    if (await StoreReview.isAvailableAsync()) {
+      await StoreReview.requestReview();
+      return;
+    }
+
+    if (Platform.OS === "ios") {
+      Linking.openURL(
+        `https://apps.apple.com/app/id${APP_STORE_ID}?action=write-review`
+      );
+      return;
+    }
+
     Linking.openURL("market://details?id=com.kevinwood.vantage").catch(() =>
       Linking.openURL(
         "https://play.google.com/store/apps/details?id=com.kevinwood.vantage"

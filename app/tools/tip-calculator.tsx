@@ -10,6 +10,8 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { Disclaimer } from "@/components/Disclaimer";
+
 // ─── Pure calculations ───────────────────────────────────────────────────────
 
 type CalcResult = {
@@ -323,6 +325,8 @@ export default function TipCalculatorScreen() {
             </View>
           </View>
         )}
+
+        <Disclaimer variant="finance" />
       </View>
     </ScrollView>
   );

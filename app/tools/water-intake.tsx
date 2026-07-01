@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { Disclaimer } from "@/components/Disclaimer";
+import { Sources } from "@/components/Sources";
 import { getSetting, setSetting } from "@/lib/storage";
 
 // ─── Calculation ──────────────────────────────────────────────────────────────
@@ -297,6 +299,16 @@ export default function WaterIntakeScreen() {
             ))}
           </View>
         </View>
+
+        <Disclaimer variant="health" />
+        <Sources
+          links={[
+            {
+              label: "Cleveland Clinic: How Much Water You Should Drink Every Day",
+              url: "https://health.clevelandclinic.org/how-much-water-do-you-need-daily",
+            },
+          ]}
+        />
       </View>
     </ScrollView>
   );
